@@ -6,6 +6,6 @@ services:
     ports:
     - '18080:8080'
     environment:
-      REFERENCE_XSD_PATH: /xsd/OTA_VehAvailRateRS.xsd
+      REFERENCE_XSD_PATH: /xsd/sample.xsd
     volumes:
-    - ./xsd:/xsd
+    - ./src/test/resources:/xsd
