@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  xml-xsd-validator:
+    build: ./
+    image: artyomov/xml-xsd-validator:latest
+    ports:
+    - '18080:8080'
+    environment:
+      REFERENCE_XSD_PATH: /xsd/OTA_VehAvailRateRS.xsd
+    volumes:
+    - ./xsd:/xsd
