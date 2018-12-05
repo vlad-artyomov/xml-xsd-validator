@@ -6,6 +6,6 @@ services:
     - '18080:8080'
     - '18000:8000'
     environment:
-      REFERENCE_XSD_PATH: /xsd
+      REFERENCE_XSD_PATH: /xsd/OTA_VehAvailRateRS.xsd
     volumes:
     - ./xsd:/xsd
