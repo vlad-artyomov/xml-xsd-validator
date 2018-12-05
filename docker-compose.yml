@@ -2,6 +2,7 @@ version: '3.3'
 services:
   xml-xsd-validator:
     build: ./
+    image: artyomov/xml-xsd-validator:latest
     ports:
     - '18080:8080'
     - '18000:8000'
