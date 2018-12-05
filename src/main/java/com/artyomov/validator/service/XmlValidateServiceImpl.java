@@ -2,8 +2,7 @@ package com.artyomov.validator.service;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 import reactor.core.publisher.Mono;
@@ -14,7 +13,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.IOException;
+import java.io.File;
 import java.io.StringReader;
 
 /**
@@ -28,13 +27,25 @@ public class XmlValidateServiceImpl implements XmlValidateService {
     @Autowired
     private Logger logger;
 
+    @Value("${reference.xsd.path}")
+    private String refXsdPath;
+
     private Schema xsdSchema;
 
     @PostConstruct
-    private void init() throws IOException, SAXException {
-        Resource xsdResource = new ClassPathResource("sample.xsd");
+    private void init() throws SAXException {
+        File xsdSchemaFile = new File(refXsdPath);
+        if (xsdSchemaFile.isDirectory()) {
+            File[] xsdFiles = xsdSchemaFile.listFiles();
+            if (xsdFiles != null && xsdFiles.length > 0) {
+                xsdSchemaFile = xsdFiles[0];
+            } else {
+                throw new RuntimeException("XSD folder is empty");
+            }
+        }
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        xsdSchema = factory.newSchema(new StreamSource(xsdResource.getInputStream()));
+        xsdSchema = factory.newSchema(xsdSchemaFile);
+        logger.info("Loaded {} as a reference XSD", xsdSchemaFile.getName());
     }
 
     @Override

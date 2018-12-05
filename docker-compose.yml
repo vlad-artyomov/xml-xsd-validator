@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  xml-xsd-validator:
+    build: ./
+    ports:
+    - '18080:8080'
+    - '18000:8000'
+    environment:
+      REFERENCE_XSD_PATH: /xsd
+    volumes:
+    - ./xsd:/xsd
